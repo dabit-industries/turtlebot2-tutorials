@@ -1,0 +1,7 @@
+<launch>
+  <arg name="node_name" default="rospy_example_class_launch"/>
+  <node pkg="turtlebot_dabit" type="rospy_example_class" name="rospy_example_class" output="screen">
+    <param name="node_name" value="$(arg node_name)"/>
+    <param name="anonymous" value="True"/>
+  </node>
+</launch>

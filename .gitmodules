@@ -1,0 +1,24 @@
+[submodule "Setup/workspace/apriltags_cpp"]
+	path = Setup/workspace/apriltags_cpp
+	url = http://github.com/dabit-industries/apriltags_cpp
+[submodule "Setup/workspace/g2o"]
+	path = Setup/workspace/g2o
+	url = https://github.com/RainerKuemmerle/g2o
+[submodule "Setup/workspace/gtsam"]
+	path = Setup/workspace/gtsam
+	url = https://bitbucket.org/gtborg/gtsam.git
+[submodule "Setup/workspace/rtabmap"]
+	path = Setup/workspace/rtabmap
+	url = https://github.com/introlab/rtabmap
+[submodule "Setup/catkin_ws/apriltags"]
+	path = Setup/catkin_ws/apriltags
+	url = http://github.com/dabit-industries/apriltags
+[submodule "Setup/catkin_ws/rgbdslam_v2"]
+	path = Setup/catkin_ws/rgbdslam_v2
+	url = http://github.com/felixendres/rgbdslam_v2.git
+[submodule "Setup/catkin_ws/g2o"]
+	path = Setup/catkin_ws/g2o
+	url = http://github.com/felixendres/g2o
+[submodule "Setup/catkin_ws/rtabmap_ros"]
+	path = Setup/catkin_ws/rtabmap_ros
+	url = https://github.com/introlab/rtabmap_ros

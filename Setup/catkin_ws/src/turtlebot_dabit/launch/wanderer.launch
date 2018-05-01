@@ -1,0 +1,3 @@
+<launch>
+  <node pkg="turtlebot_dabit" type="control.py" name="control.py" output="screen"></node>
+</launch>

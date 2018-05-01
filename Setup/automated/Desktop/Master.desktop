@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Master
+Comment=
+Exec=dabit-launcher master
+Icon=
+Path=
+Terminal=true
+StartupNotify=false
+

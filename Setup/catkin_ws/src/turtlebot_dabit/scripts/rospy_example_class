@@ -1,0 +1,22 @@
+#!/usr/bin/env python2.7
+
+# -*-
+# License/copyright here
+# -*-
+
+"""
+Run the rospy_example_class node
+"""
+
+from turtlebot_dabit.rospy_example_class import example_class
+
+
+def _main():
+    node = example_class()
+    try:
+        node.run()
+    except Exception, e:
+        print "Exception excepted!\r\n{}".format(e)
+
+if __name__ == "__main__":
+    _main()

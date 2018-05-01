@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <arg name="host" />
+  <arg name="ns" default="lidar_link" />
+  <arg name="return" default="max" />
+  <arg name="maxCloudSize" default="-1" />
+
+  <arg name="scan_topic" default="scan"/>
+
+  <!-- Disable bond topics by default -->
+  <arg name="respawn" default="false" />
+
+  <!-- Worker threads for the nodelet manager -->
+  <arg name="num_worker_threads" default="4" />
+
+
+  <!-- throttle -->
+
+  <!-- Start nodelet manager -->
+  <arg name="manager" value="$(arg ns)_nodelet_manager" />
+  <node pkg="nodelet" type="nodelet" name="$(arg manager)" args="manager"
+    output="screen">
+    <param name="num_worker_threads" value="$(arg num_worker_threads)" />
+  </node>
+
+  <node pkg="topic_tools" type="throttle" name="lidar_throttle" args="messages /$(arg ns)/points 5.0"/>
+
+  <node pkg="nodelet" type="nodelet" name="pointcloud_to_laserscan" args="load pointcloud_to_laserscan/pointcloud_to_laserscan_nodelet $(arg ns)_nodelet_manager">
+    <!-- Pixel rows to use to generate the laserscan. For each column, the scan will
+         return the minimum value for those pixels centered vertically in the image. -->
+    <param name="scan_height" value="10"/>
+    <param name="range_min" value="0.4"/>
+    <param name="angle_min" value="-3.1415"/>
+    <param name="angle_max" value="3.1415"/>
+    <remap from="cloud_in" to="$(arg ns)/points_throttle"/>
+    <remap from="scan" to="$(arg ns)/$(arg scan_topic)"/>
+  </node>
+</launch>

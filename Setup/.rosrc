@@ -1,0 +1,13 @@
+# Set the MASTER_IP here
+export MASTER_IP=$(get_ip)
+
+# Set TURTLEBOT parameters
+export TURTLEBOT_BASE=kobuki
+export TURTLEBOT_3D_SENSOR=astra
+export TURTLEBOT_STACK=hexagons
+
+# Set ROS Network parameters
+export ROS_MASTER_URI=http://$MASTER_IP:11311
+export ROS_IP=$(get_ip)
+export ROS_HOSTNAME=$(get_ip)
+export ROS_HOME=~/.ros

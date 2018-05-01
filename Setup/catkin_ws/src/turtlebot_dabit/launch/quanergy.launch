@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <arg name="host" default="192.168.1.3"/>
+  <arg name="ns" default="lidar_link" />
+  <arg name="return" default="max" />
+  <arg name="maxCloudSize" default="-1" />
+
+  <arg name="scan_topic" default="scan"/>
+
+  <!-- driver -->
+  <group ns="$(arg ns)">
+    <node name="client_node" 
+          pkg="quanergy_client_ros" 
+          type="client_node" 
+          args="--host $(arg host) --settings $(find quanergy_client_ros)/settings/client.xml --frame $(arg ns) --return $(arg return) --max-cloud $(arg maxCloudSize)"
+          required="true" 
+          output="screen"/>
+  </group>
+</launch>

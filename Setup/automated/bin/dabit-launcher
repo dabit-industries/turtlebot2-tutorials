@@ -1,0 +1,97 @@
+#!/bin/bash
+. ~/.bashrc
+. ~/.rosrc
+. /opt/ros/kinetic/setup.bash
+. ~/catkin_ws/devel/setup.bash
+
+function dabit-launcher(){
+  if [ "$1" == "turtlebot" ]; then
+      echo "IP_OF_TURTLEBOT: $MASTER_IP"
+      confirm "Press any key to continue"
+      if [ -f ~/.wanderer_pid ]; then
+          cat ~/.wanderer_pid | xargs kill -9
+          rm ~/.wanderer_pid
+      fi
+			if [ -f ~/.ros/rtabmap.db ]; then
+          _backup_folder="${HOME}/backups/rtabmap_"$(date '+%m-%d-%y_%H-%M-%S')
+          mkdir -p "$_backup_folder"
+          mv "${HOME}/.ros/rtabmap.db" "$_backup_folder"
+      fi
+      roslaunch turtlebot_dabit turtlebot.launch
+			confirm "Press any key to exit"
+  elif [ "$1" == "master" ]; then
+      echo "Turtlebot IP is: $MASTER_IP"
+      confirm "Is this correct? [y/N]"
+      if [[ "$?" -eq 0 ]]; then
+          if [ -f ~/.ros/rtabmap.db ]; then
+              _backup_folder="${HOME}/backups/rtabmap_"$(date '+%m-%d-%y_%H-%M-%S')
+              mkdir -p "$_backup_folder"
+              mv "${HOME}/.ros/rtabmap.db" "$_backup_folder"
+          fi
+          rosrun rqt_turtlebot_dabit rqt_turtlebot_dabit
+          confirm "Press any key to exit"
+      else
+					master=""
+          read -p "Input the Master IP: " master
+          echo $master
+          if [ ! -z $master ]; then
+            . change_master $master
+            . ${HOME}/.bashrc
+          fi
+          dabit-launcher master
+      fi
+  elif [ "$1" == "master-bag" ]; then
+      echo "Master IP should be: localhost"
+      echo "Master IP is: $MASTER_IP"
+      confirm "Is this correct? [y/N]"
+      if [[ "$?" -eq 0 ]]; then
+          if [ -f ~/.ros/rtabmap.db ]; then
+              _backup_folder="${HOME}/backups/rtabmap_"$(date '+%m-%d-%y_%H-%M-%S')
+              mkdir -p "$_backup_folder"
+              mv "${HOME}/.ros/rtabmap.db" "$_backup_folder"
+          fi
+          roslaunch rqt_turtlebot_dabit rqt_turtlebot_dabit_bag.launch
+          confirm "Press any key to exit"
+      else
+					master=""
+          read -p "Input the Master IP: " master
+          echo $master
+          if [ ! -z $master ]; then
+            . change_master $master
+            . ${HOME}/.bashrc
+          fi
+          dabit-launcher master
+      fi
+  elif [ "$1" == "wanderer" ]; then
+      echo "Wanderer"
+      if [ ! -f ~/.wanderer_pid ]; then
+          nohup roslaunch turtlebot_dabit wanderer.launch > /dev/null 2>&1 &
+          echo $! > ~/.wanderer_pid
+          cat ~/.wanderer_pid
+      else
+          echo "Wanderer Exists! Killing"
+          cat ~/.wanderer_pid | xargs kill -9
+          rosnode kill /control.py
+          rm ~/.wanderer_pid
+      fi
+  elif [ "$1" == "viewer" ]; then
+      if [ -f "~/.ros/rtabmap.db" ]; then
+        rtabmap-databaseViewer ~/.ros/rtabmap.db
+      fi
+  elif [ "$1" == "xml_to_pgm" ]; then
+      if [ -z "$2" ]; then
+        python ${HOME}/workspace/xml_to_pgm.py "$2" 10 10
+      fi
+  elif [ "$1" == "sync_rtabmap"]; then
+      if [ -z "$2" ]; then
+          rtabmap_db="$2"
+      else
+          rtabmap_db="~/.ros/rtabmap.db"
+      fi
+      
+      rsync -avz --stats --progress turtlebot@$MASTER_IP "$rtabmapdb"
+  else
+      echo "$1 Unknown"
+  fi
+}
+dabit-launcher "$1" "$2"

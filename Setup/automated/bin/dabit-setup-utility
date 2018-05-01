@@ -1,0 +1,23 @@
+#!/bin/bash
+function dabit-setup-utility(){
+    if [ -z $1 ]; then
+        echo "Help"
+    elif [ $1 == "install" ]; then
+        confirm "Going to install. Are you sure? [y/N]" && . "$DABIT_DIR/Setup/automated/install.sh"
+    elif [ $1 == "update" ]; then
+        confirm "Updating. Are you sure? [y/N]" && . "$DABIT_DIR/Setup/automated/update.sh"
+    elif [ $1 == "reset" ]; then
+        confirm "Resetting. Are you sure [y/N]" && . "$DABIT_DIR/Setup/automated/reset.sh"
+    elif [ $1 == "backup" ]; then
+        . "$DABIT_DIR/Setup/automated/backup.sh"
+    elif [ $1 == "test" ]; then
+        echo "Environment setup successful"
+        echo ""
+        echo "Please run the following commands:"
+        echo "  dabit-setup-utility install"
+    else
+        echo "invalid command"
+        echo "help"
+    fi
+}
+dabit-setup-utility $@

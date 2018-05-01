@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Master-Bag
+Comment=
+Exec=dabit-launcher master-bag
+Icon=
+Path=
+Terminal=true
+StartupNotify=false
+

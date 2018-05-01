@@ -1,0 +1,6 @@
+<launch>
+  <node pkg="rosserial_python" type="serial_node.py" name="turtlebot_arduino">
+    <param name="port" value="/dev/ttyUSB0" />
+  </node>
+</launch>
+

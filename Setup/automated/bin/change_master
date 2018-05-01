@@ -1,0 +1,13 @@
+#!/bin/bash
+function change_master(){
+    if [ -z "$1" ]; then
+        echo "Current Master: $MASTER_IP"
+    else
+        OLD_MASTER_IP="$MASTER_IP"
+        sed -i '/MASTER_IP=/c\export MASTER_IP='"$1" ~/.rosrc
+        . ~/.rosrc
+        echo "Master changed from $OLD_MASTER_IP to $MASTER_IP"
+    fi
+    . ~/.rosrc
+}
+change_master $1

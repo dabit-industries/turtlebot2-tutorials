@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<robot name="sensor_m8" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find turtlebot_dabit_description)/urdf/turtlebot_gazebo.urdf.xacro"/>
+  <xacro:include filename="$(find turtlebot_dabit_description)/urdf/turtlebot_properties.urdf.xacro"/>
+
+  <!-- Xacro properties -->
+  <xacro:property name="m8_px" value="0"/>
+  <xacro:property name="m8_py" value="0"/>
+  <xacro:property name="m8_pz" value="0.4"/>
+  <xacro:property name="lidar_px" value="0"/>
+  <xacro:property name="lidar_py" value="0"/>
+  <xacro:property name="lidar_pz" value="0.016"/>
+  <xacro:property name="imu_py" value="0.011"/>
+  <xacro:property name="lidar_display_scale" value="0.001"/>
+  <!-- Parameterised in part by the values in turtlebot_properties.urdf.xacro -->
+  <xacro:macro name="sensor_m8" params="parent">
+    <joint name="baseplate_joint" type="fixed">
+      <origin xyz="${m8_px} ${m8_py} ${m8_pz}"
+        rpy="0 0 -${M_PI/2}"/>
+      <parent link="${parent}"/>
+      <child link="m8_baseplate" />
+    </joint>
+    <link name="m8_baseplate">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://turtlebot_dabit_description/meshes/sensors/M8_baseplate.STL" scale="${lidar_display_scale} ${lidar_display_scale} ${lidar_display_scale}"/>
+        </geometry>
+        <xacro:insert_block name="material_dark_grey" />
+      </visual>
+      <collision>
+        <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+        <geometry>
+        <box size="0.0400 0.1650 0.0300"/>
+      </geometry>
+      </collision>
+      <inertial>
+        <mass value="0.564" />
+        <origin xyz="0 0 0" />
+        <inertia ixx="0.003881243" ixy="0.0" ixz="0.0"
+                 iyy="0.000498940" iyz="0.0"
+                 izz="0.003879257" />
+      </inertial>
+    </link>
+
+    <!-- IMU here -->
+
+    <joint name="m8_joint" type="fixed">
+      <origin xyz="${lidar_px} ${lidar_py} ${lidar_pz}"
+        rpy="0 0 ${M_PI/2}"/>
+      <parent link="m8_baseplate"/>
+      <child link="lidar_link"/>
+    </joint>
+    <link name="lidar_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://turtlebot_dabit_description/meshes/sensors/M8.STL" scale="${lidar_display_scale} ${lidar_display_scale} ${lidar_display_scale}"/>
+        </geometry>
+        <xacro:insert_block name="material_black" />
+      </visual>
+      <collision>
+        <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+        <geometry>
+          <box size="0.0400 0.1650 0.0300"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="0.564" />
+        <origin xyz="0 0 0" />
+        <inertia ixx="0.003881243" ixy="0.0" ixz="0.0"
+                 iyy="0.000498940" iyz="0.0"
+                 izz="0.003879257" />
+      </inertial>
+    </link>
+
+  </xacro:macro>
+</robot>
